@@ -102,54 +102,27 @@ T factorial(int num ){
     }
     return factorial;
 }
-template <typename T>
-std::vector<T> sort(std::vector<T> A,bool ascending=true){
-    
-}
+
 int main(){
     int n = input();
-    int m = input();
-    lli k = input<lli>();
-    std::vector<lli> A =take_vector<lli>(n);
-    std::vector<lli> B = take_vector<lli>(m);
-    std::sort(A.begin(),A.end(),[&](int a,int b){
-        return a>b;
-    });
-    std::sort(B.begin(),B.end(),[&](int a,int b){
-        return a >b;
-    });
-    lli i =0;
-    lli j =0;
+    lli  x =input<lli>();
+    std::vector<lli> A = take_vector<lli>(n);
+    std::sort(A.begin(),A.end());
+    int i =0 ;
+    int j=A.size()-1;
     int count =0;
-    
-    while(i < A.size()&& j<B.size()){
-        // print(A[i]," ");
-        //     print(B[j]," ");
-        //     print(i, " ");
-        //     print(j);
-        if((A[i]==B[j])||(A[i]<B[j] &&A[i]+k >=B[j]) || (A[i]>B[j]&& A[i]-k <=B[j])){
-            // print<std::string>("here");
-            // print(A[i]," ");
-            // print(B[j]," ");
-            // print(i, " ");
-            // print(j);
+    while(i<j){
+        if(A[i]+A[j]<=x){
             count++;
             i++;
-            j++;
-            
+            j--;
+        }else {
+            count++;
+            j--;
+        }if(i==j){
+            count++;
+            break;
         }
-        else {
-            if (A[i]+k < B[j]){
-                j++;
-            } if(A[i]-k>B[j]) {
-                i++;
-            }
-        }
-        
-    }
-    print(count);
-
-
-
+    }print(count);
     return 0;
 }
