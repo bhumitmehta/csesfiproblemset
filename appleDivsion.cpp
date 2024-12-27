@@ -5,6 +5,9 @@
 #include <numeric> // Include this header for std::accumulate
 #include <stdexcept> // Include this header for std::out_of_range
 
+
+
+
 template<typename T>
 std::vector<T> take_vector(size_t size, std::istream& in = std::cin) {
     std::vector<T> vec;

@@ -6,8 +6,6 @@
 #include <stdexcept> // For std::out_of_range
 #include <cmath>
 
-
-
 using vecint = std::vector<int>;
 using str = std::string;
 using lli = long long int;
@@ -23,8 +21,9 @@ std::vector<T> take_vector(size_t size, std::istream& in = std::cin) {
 
 // Function to print vector elements
 template<typename T>
-void print_vector(const std::vector<T>& vec, const std::string& delimiter = " ") {
+void print_vector(const std::vector<T>& vec, const std::string& delimiter = " " ) {
     if (!vec.empty()) {
+
         std::copy(vec.begin(), vec.end() - 1, std::ostream_iterator<T>(std::cout, delimiter.c_str()));
         std::cout << vec.back(); // Print last element without delimiter
     }
@@ -104,54 +103,44 @@ T factorial(int num ){
     }
     return factorial;
 }
-
-void binarySearch(lli l,std::vector<lli>& h){
-    lli low = 0;
-    lli high = h.size()-1;
-    lli mid = (low+high)/2;
-    while(low < high){
-        if(h[mid] >l){
-            high = mid-1;
-            mid  = (high+low)/2;
-        }if(h[mid] < l) {
-            low = mid+1;
-            mid = (high+low)/2;
-        }
-        if(h[mid] == l){
-            h.erase(h.begin()+mid);
-            print(h[mid]);
-            return;
-        }
-    }
-    while(low>=0){
-        if(h[low] > l){
-            low--;
-        }else {
-            print(h[low]);
-            h.erase(h.begin()+low);
-            
-            return;
-        }
-    }
-    print(-1);
-    return;
-
-}
-
 int main(){
     int n = input();
-    int m = input();
-    std::vector<lli> h = take_vector<lli>(n);
-    std::vector<lli> t = take_vector<lli>(m);
-    std::sort(h.begin(),h.end(),[&](lli a, lli b){
-        return a <b;
-    });
-    // print_vector(h);
-    
-    for(auto l : t){
-        binarySearch(l,h);
-        // print_vector(h);
+
+    // Store arrival and departure times
+    std::vector<lli> arrivals(n), departures(n);
+    for(int i = 0; i < n; i++){
+        arrivals[i] = input();
+        departures[i] = input();
     }
-    
+
+    // Collect all times in a single vector
+    std::vector<lli> comp;
+    comp.reserve(2*n);
+    for(int i = 0; i < n; i++){
+        comp.push_back(arrivals[i]);
+        comp.push_back(departures[i]);
+    }
+
+    // Sort and remove duplicates
+    std::sort(comp.begin(), comp.end());
+    comp.erase(std::unique(comp.begin(), comp.end()), comp.end());
+
+    // Build frequency array
+    std::vector<lli> freq(comp.size() + 1, 0);
+    for(int i = 0; i < n; i++){
+        int start_idx = std::lower_bound(comp.begin(), comp.end(), arrivals[i]) - comp.begin();
+        int end_idx = std::lower_bound(comp.begin(), comp.end(), departures[i]) - comp.begin();
+        freq[start_idx]++;
+        freq[end_idx]--;
+    }
+
+    // Compute the prefix sum and track maximum
+    lli max_customers = 0, current = 0;
+    for(size_t i = 0; i < freq.size(); i++){
+        current += freq[i];
+        max_customers = std::max(max_customers, current);
+    }
+
+    print(max_customers);
     return 0;
 }
