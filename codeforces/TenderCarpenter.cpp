@@ -21,9 +21,8 @@ std::vector<T> take_vector(size_t size, std::istream& in = std::cin) {
 
 // Function to print vector elements
 template<typename T>
-void print_vector(const std::vector<T>& vec, const std::string& delimiter = " " ) {
+void print_vector(const std::vector<T>& vec, const std::string& delimiter = " ") {
     if (!vec.empty()) {
-
         std::copy(vec.begin(), vec.end() - 1, std::ostream_iterator<T>(std::cout, delimiter.c_str()));
         std::cout << vec.back(); // Print last element without delimiter
     }
@@ -103,44 +102,30 @@ T factorial(int num ){
     }
     return factorial;
 }
-int main(){
+
+void solve(){
     int n = input();
-
-    // Store arrival and departure times
-    std::vector<lli> arrivals(n), departures(n);
-    for(int i = 0; i < n; i++){
-        arrivals[i] = input();
-        departures[i] = input();
+    vecint a = take_vector(n);
+    bool k = true;
+    for(int i=0;i<n-1;i++){
+        if(2*a[i]>a[i+1] && 2*a[i+1]>a[i]){
+            k = false;
+            // print("Yes");
+            break;
+        }
     }
-
-    // Collect all times in a single vector
-    std::vector<lli> comp;
-    comp.reserve(2*n);
-    for(int i = 0; i < n; i++){
-        comp.push_back(arrivals[i]);
-        comp.push_back(departures[i]);
+    if(!k){
+        print("Yes");
     }
-
-    // Sort and remove duplicates
-    std::sort(comp.begin(), comp.end());
-    comp.erase(std::unique(comp.begin(), comp.end()), comp.end());
-
-    // Build frequency array
-    std::vector<lli> freq(comp.size() + 1, 0);
-    for(int i = 0; i < n; i++){
-        int start_idx = std::lower_bound(comp.begin(), comp.end(), arrivals[i]) - comp.begin();
-        int end_idx = std::lower_bound(comp.begin(), comp.end(), departures[i]) - comp.begin();
-        freq[start_idx]++;
-        freq[end_idx]--;
+    else{
+        print("NO");
     }
- 
-    // Compute the prefix sum and track maximum
-    lli max_customers = 0, current = 0;
-    for(size_t i = 0; i < freq.size(); i++){
-        current += freq[i];
-        max_customers = std::max(max_customers, current);
-    }
+}
 
-    print(max_customers);
+int main(){
+    int n  = input();
+    while(n--){
+        solve();
+    }
     return 0;
 }
