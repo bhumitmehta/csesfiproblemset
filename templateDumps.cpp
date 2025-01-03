@@ -5,11 +5,35 @@
 #include <numeric> // For std::accumulate
 #include <stdexcept> // For std::out_of_range
 #include <cmath>
+#include <unordered_map>
+#include <map>
 
 using vecint = std::vector<int>;
 using str = std::string;
 using lli = long long int;
+using graint = std::vector<std::vector<int>>;
+using gralli = std::vector<std::vector<lli>>;
+using vecpair = std::vector<std::pair<lli, lli>>;
+using mapint = std::map<lli,lli>;
+using maplli = std::map<lli,lli>;
+using mapstr = std::map<str,lli>;
+using vecstr = std::vector<str>;
+
 #define RESULT_MODULO 1000000007 // Corrected macro
+
+template <typename T = int>
+std::vector<std::vector<T>> create_graph(int n, int m, std::istream& in = std::cin) {
+    std::vector<std::vector<T>> graph(n);
+    for (int i = 0; i < m; i++) {
+        T u, v;
+        in >> u >> v;
+        graph[u - 1].push_back(v - 1);
+        graph[v - 1].push_back(u - 1);
+    }
+    return graph;
+}
+
+
 
 // Function to take vector input
 template<typename T = int>
