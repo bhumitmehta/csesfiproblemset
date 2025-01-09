@@ -8,6 +8,7 @@
 #include <unordered_map>
 #include <map>
 
+using veclli = std::vector<long long int>;
 using vecint = std::vector<int>;
 using str = std::string;
 using lli = long long int;
