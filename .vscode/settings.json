@@ -70,6 +70,10 @@
     "xlocmes": "cpp",
     "xlocmon": "cpp",
     "xloctime": "cpp",
-    "xtree": "cpp"
+    "xtree": "cpp",
+    "mutex": "cpp",
+    "random": "cpp",
+    "stop_token": "cpp",
+    "thread": "cpp"
 }
 }
