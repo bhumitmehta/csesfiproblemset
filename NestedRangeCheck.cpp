@@ -7,7 +7,7 @@
 #include <cmath>
 #include <unordered_map>
 #include <map>
-
+#include <set>
 using veclli = std::vector<long long int>;
 using vecint = std::vector<int>;
 using str = std::string;
@@ -127,43 +127,41 @@ T factorial(int num ){
     }
     return factorial;
 }
-#include <bits/stdc++.h>
-using namespace std;
+int main(){
+    int n = input();
+    std::multiset<std::pair<int,int>> upper;
+    std::multiset<std::pair<int,int>> lower;
+    std::vector<bool> s;
+    std::vector<bool> e;
 
-int main() {
-    ios::sync_with_stdio(false);
-    cin.tie(nullptr);
-
-    int n, k;
-    cin >> n >> k;
-
-    list<int> children;
-    for (int i = 1; i <= n; i++) {
-        children.push_back(i);
-    }
-
-    auto it = children.begin();
-    vector<int> removal_order;
-
-    while (!children.empty()) {
-        // Move `k` steps forward
-        for (int i = 0; i < k; i++) {
-            it++;
-            if (it == children.end()) it = children.begin(); // Wrap around
+    while(n-->0){
+        int a = input();
+        int b = input();
+        upper.insert({a,b});
+        lower.insert({b,a});
+        print(""," ");
+       auto  it = upper.lower_bound({a,b});
+    //    auto it1 = upper.upper_bound({a,b});
+       auto t =  lower.upper_bound({b,a});
+    //    auto t1 = lower.lower_bound({b,a});
+        while(it != upper.begin() && it->first <= a && it->second >= b){
+            //  print(it->first," ");print(it->second," ");
+            //  print("here");
+            it = prev(it);
+            // print(it->first," ");print(it->second," ");
+            // print("here1");
+            // print("here");
         }
-
-        // Remove the current child
-        removal_order.push_back(*it);
-        it = children.erase(it);
-
-        // Wrap around if the iterator reaches the end
-        if (it == children.end()) it = children.begin();
+        if(it->first <= a && it->second > b || it->first < a && it->second >= b){
+            // print(it->first," ");print(it->second," ");
+            // print(a," ");
+            // print(b);
+            s.push_back(1);
+        }else {
+            s.push_back(0);
+        }
     }
-
-    for (int child : removal_order) {
-        cout << child << " ";
-    }
-    cout << '\n';
-
+    print_vector(s);
+    
     return 0;
 }
