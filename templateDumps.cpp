@@ -7,6 +7,7 @@
 #include <cmath>
 #include <unordered_map>
 #include <map>
+#include <queue>
 
 using veclli = std::vector<long long int>;
 using vecint = std::vector<int>;
