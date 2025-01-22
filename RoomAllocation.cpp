@@ -17,6 +17,9 @@ struct CompareCustomers {
     }
 };
 
+//this problem is similar to dynamic window sliding problem to find the max length of the window based on some conditions
+//In this problem the Priority Queue Serves as a Window 
+
 int main() {
     int n;
     std::cin >> n;
@@ -44,7 +47,7 @@ int main() {
     std::priority_queue<int, std::vector<int>, std::greater<int>> available_rooms;
 
     for (int i = 0; i < n; i++) {
-        // Free up rooms that are available before or at the current customer's arrival
+        // Free up rooms that are available before the current customer's arrival
         while (!pq.empty() && pq.top().dep < rooms[i].arrival) {
             available_rooms.push(room_assignment[pq.top().id]);
             pq.pop();
