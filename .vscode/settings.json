@@ -74,6 +74,9 @@
     "mutex": "cpp",
     "random": "cpp",
     "stop_token": "cpp",
-    "thread": "cpp"
+    "thread": "cpp",
+    "sumofthree": "cpp",
+    "deque": "cpp",
+    "queue": "cpp"
 }
 }

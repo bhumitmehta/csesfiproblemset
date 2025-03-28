@@ -8,7 +8,9 @@
 #include <unordered_map>
 #include <map>
 #include <queue>
+#include <chrono>
 
+using namespace std;
 using veclli = std::vector<long long int>;
 using vecint = std::vector<int>;
 using str = std::string;
@@ -20,6 +22,7 @@ using mapint = std::map<lli,lli>;
 using maplli = std::map<lli,lli>;
 using mapstr = std::map<str,lli>;
 using vecstr = std::vector<str>;
+
 
 #define RESULT_MODULO 1000000007 // Corrected macro
 

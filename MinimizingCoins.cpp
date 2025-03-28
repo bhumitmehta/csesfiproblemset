@@ -1,73 +1,11 @@
 #include <iostream>
 #include <vector>
-#include <iterator>
 #include <algorithm>
-#include <numeric> // For std::accumulate
-#include <stdexcept> // For std::out_of_range
-#include <cmath>
-#include <unordered_map>
-#include <map>
-#include <queue>
+#include <limits> // For INT_MAX
 
-using veclli = std::vector<long long int>;
-using vecint = std::vector<int>;
-using str = std::string;
 using lli = long long int;
-using graint = std::vector<std::vector<int>>;
-using gralli = std::vector<std::vector<lli>>;
-using vecpair = std::vector<std::pair<lli, lli>>;
-using mapint = std::map<lli,lli>;
-using maplli = std::map<lli,lli>;
-using mapstr = std::map<str,lli>;
-using vecstr = std::vector<str>;
+using veclli = std::vector<lli>;
 
-#define RESULT_MODULO 1000000007 // Corrected macro
-
-template <typename T = int>
-std::vector<std::vector<T>> create_graph(int n, int m, std::istream& in = std::cin) {
-    std::vector<std::vector<T>> graph(n);
-    for (int i = 0; i < m; i++) {
-        T u, v;
-        in >> u >> v;
-        graph[u - 1].push_back(v - 1);
-        graph[v - 1].push_back(u - 1);
-    }
-    return graph;
-}
-
-
-
-// Function to take vector input
-template<typename T = int>
-std::vector<T> take_vector(size_t size, std::istream& in = std::cin) {
-    std::vector<T> vec;
-    std::copy_n(std::istream_iterator<T>(in), size, std::back_inserter(vec));
-    return vec;
-}
-
-// Function to print vector elements
-template<typename T>
-void print_vector(const std::vector<T>& vec, const std::string& delimiter = " ") {
-    if (!vec.empty()) {
-        std::copy(vec.begin(), vec.end() - 1, std::ostream_iterator<T>(std::cout, delimiter.c_str()));
-        std::cout << vec.back(); // Print last element without delimiter
-    }
-    std::cout << std::endl;
-}
-
-// Function to sum elements of a vector within a specified range
-template<typename T>
-T sum_vector_element(const std::vector<T>& vec, int start = 0, int end = -1) {
-    if (end == -1) {
-        end = vec.size(); // Set end to the size of the vector
-    }
-    if (start < 0 || end > vec.size() || start >= end) {
-        throw std::out_of_range("Invalid start or end index");
-    }
-    return std::accumulate(vec.begin() + start, vec.begin() + end, T(0));
-}
-
-// Template function to input a value
 template <typename T = int>
 T input(std::istream& in = std::cin) {
     T value;
@@ -75,69 +13,44 @@ T input(std::istream& in = std::cin) {
     return value;
 }
 
-// Function to print a single value
-template <typename T = int>
+template<typename T = int>
+std::vector<T> take_vector(size_t size, std::istream& in = std::cin) {
+    std::vector<T> vec(size);
+    for (size_t i = 0; i < size; i++) {
+        in >> vec[i];
+    }
+    return vec;
+}
+
+template<typename T>
 void print(T val, const std::string& delimiter = "\n") {
     std::cout << val << delimiter;
 }
 
-// Variadic template function to print multiple values
-template <typename T, typename... Args>
-void print(T first, const std::string& delimiter, Args... args) {
-    std::cout << first << delimiter;
-    print(args..., delimiter); // Recursively call with the remaining arguments
-}
-
-// Template function to find the maximum of two values
-template <typename T = int>
-T max(T a, T b) {
-    return (a > b) ? a : b;
-}
-
-// Template function to find the minimum of two values
-template <typename T = int>
-T min(T a, T b) {
-    return (a < b) ? a : b;
-}
-
-// Template function to check if a value is odd
-template <typename T = int>
-bool isOdd(T val) {
-    return val % 2 != 0;
-}
-
-// Template function for modular exponentiation
-template <typename T = int>
-T mod_exp(T base, T exp, T mod) {
-    T result = 1;
-    while (exp >= 1) {
-        if (exp % 2 == 1) {
-            result = (result * base) % mod;
-        }
-        base = (base * base) % mod;
-        exp /= 2;
-    }
-    return result;
-}
-
-template <typename T=lli>
-T factorial(int num ){
-    T factorial =1;
-    for(int i=1;i<=num;i++){
-        factorial *=i; 
-    }
-    return factorial;
-}
-int main(){
+int main() {
     int n = input();
     int t = input();
-    veclli coins = take_vector<lli>(n+1);
-    sort(coins.begin(),coins.end());
-    std::vector<std::vector<lli>> dp (n,std::vector<lli>(t+1,0));
-    for(int i=1;i<n;i++){
-        for(int j=1;j<t;j++){
-            dp[i][j] = 
+    veclli coins = take_vector<lli>(n);
+
+    // Sort coins to ensure the smallest coins are considered first (optional)
+    std::sort(coins.begin(), coins.end());
+
+    // Create a 1D DP array initialized with a large value (unreachable state)
+    std::vector<lli> dp(t + 1, std::numeric_limits<lli>::max());
+    dp[0] = 0; // Base case: it takes 0 coins to make sum 0
+
+    // Iterate through each coin
+    for (const auto& coin : coins) {
+        for (int j = coin; j <= t; j++) {
+            if (dp[j - coin] != std::numeric_limits<lli>::max()) {
+                dp[j] = std::min(dp[j], dp[j - coin] + 1);
+            }
         }
-    } 
+    }
+
+    // The answer is in dp[t], or -1 if it is still an unreachable state
+    lli result = dp[t];
+    print((result == std::numeric_limits<lli>::max()) ? -1 : result);
+
     return 0;
 }
